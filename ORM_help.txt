@@ -1,0 +1,15 @@
+Tineti minte ca nu vreau ceva super complicat. ORM-ul sa fie basic. Asta insemana sa suporte query-uri de genul
+"Select * from reviewers where R_id in (Select R_id from Reviews where Paper_id = @givenPaperId) R" si sa putem face CRUD.
+Asa ca nu va bateti capul cu feature-uri de care nu avem nevoie. Daca va fi nevoie de ceva mai fancy rezolvam down the line.
+
+General information:
+https://stackoverflow.com/questions/2887530/tips-resources-patterns-for-learning-to-implement-a-basic-orm
+https://stackoverflow.com/questions/1279613/what-is-an-orm-how-does-it-work-and-how-should-i-use-one
+https://stackoverflow.com/questions/33442757/how-to-implement-an-orm-in-c-sharp
+
+Implementation example:
+https://www.codeproject.com/Articles/849980/Implement-ORM-using-Csharp
+
+PostgreSql Python tutorials:
+https://www.postgresqltutorial.com/postgresql-python/ - mai detaliat
+https://pynative.com/python-postgresql-tutorial/
