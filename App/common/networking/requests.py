@@ -16,11 +16,12 @@ class Request(abc.ABC):
 
 
 class Echo(Request):
-    TIMEOUT = 5
+    TIMEOUT = 1000
 
     def __init__(self, text):
         super().__init__()
         self.text = text
+        self.response_from_server = None
 
     def __str__(self):
         return 'Echo: {}'.format(self.text)
