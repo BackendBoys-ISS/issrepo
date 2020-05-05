@@ -26,6 +26,7 @@ class Client:
         print("Server response to our echo is {}".format(response.response_from_server))
 
     # methods should:
-        # have as params data from the UI
-        # send a specific request using those params
-        # do something with the response/ data from response
+    # have as params data from the UI
+    # send a specific request using those params
+    # do something with the response/ data from response
+    # example method: think about echo() method above and image it returns something to be printed on ui
