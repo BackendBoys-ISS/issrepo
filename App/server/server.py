@@ -15,12 +15,13 @@ class Server:
     REAL_IP = None
     DUMMY_IP = '127.0.0.1'
     REQUEST_PROCESSORS_NUMBER = 4
-
     def __init__(self, use_dummy=False):
         self.__request_queue = queue.Queue()
         try:
             self.__init_http_server(use_dummy)
             self.__init_request_processors()
+            #self.__init_database(use_dummy)
+
         except Exception as e:
             print(e)
             print(traceback.format_exc())
@@ -62,6 +63,18 @@ class Server:
         # switch case for use cases
         if isinstance(request_obj, req.Echo):
             self.__echo(request_obj)
+
+    # exemplu pentru cum trebuie sa se comporte metodele server-ului
+    # 1. ia datele primate de la client(din obiectul de tip request)
+    # 2. le paseaza la o metoda care face business logic cu ele
+    # 3. seteaza un rezultat pe obiectul de tip request
+    # e bine sa fie pentru ca e usor de testat atat izolat cat si use-case intreg
+    # pentru testare izolate puteti testat doar self__do_work()
+    # def example_method(self, request_obj):
+    #     x, y, z = request_obj.x, request_obj.y, request_obj.z
+    #     data_wanted_by_client = self.__do_work(x, y, z)
+    #     request_obj.set_response(data_wanted_by_client)
+
 
     def __echo(self, request_obj): # used for testing
         print(request_obj.text)
