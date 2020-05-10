@@ -1,0 +1,5 @@
+How to use the database ConfSys:
+
+1. Create a new database ConfSys in pgAdmin (in case you haven't created one already)
+2. Restore using the ConfSys.backup file
+3. Enjoy
