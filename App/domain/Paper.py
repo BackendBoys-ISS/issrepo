@@ -1,6 +1,6 @@
 from typing import List
-from common.Domain.Topic import Topic
-from common.Domain.Keyword import Keyword
+from domain.Topic import Topic
+from domain.Keyword import Keyword
 
 
 class Paper:
@@ -12,6 +12,13 @@ class Paper:
         self.__keywords = keywords
         self.__topics = topics
         self.__document = document
+
+    def __str__(self):
+        return self.__name + '\n' +\
+        self.__document + '\n' +\
+        str(self.__topics) + '\n' +\
+        str(self.__keywords) + '\n' +\
+        self.__metadata + '.'
 
     @property
     def paperID(self) -> int:

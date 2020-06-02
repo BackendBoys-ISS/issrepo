@@ -3,6 +3,9 @@ class Keyword:
         self.__keywordID = keywordID
         self.__keyword = keyword
 
+    def __str__(self):
+        return self.__keyword
+
     @property
     def keywordID(self) -> int:
         return self.__keywordID

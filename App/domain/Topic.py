@@ -3,6 +3,9 @@ class Topic:
         self.__topicID = topicID
         self.__topic = topic
 
+    def __str__(self):
+        return self.__topic
+
     @property
     def topicID(self):
         return self.__topicID

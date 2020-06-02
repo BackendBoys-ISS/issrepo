@@ -1,5 +1,11 @@
 from common.networking.request_sender import RequestSender
-from common.networking.requests import Request, Echo
+from common.networking.requests import *
+from domain.Author import Author
+from domain.Keyword import Keyword
+from domain.PCMember import PCMember
+from domain.Paper import Paper
+from domain.Topic import Topic
+from domain.User import User
 
 
 class Client:
@@ -24,6 +30,48 @@ class Client:
     def echo(self, text):
         response = self.send_request(Echo(text))
         print("Server response to our echo is {}".format(response.response_from_server))
+
+    def sendLoginRequest(self, email, password):
+        response = self.send_request(LoginRequest(email, password))
+        return response
+
+    def sendCreateAccountRq(self, fullName, email, password):
+        response = self.send_request(CreateAccountRequest(fullName, email, password))
+        return response
+
+    def sendUploadAbstractRequest(self, paperName, keywords, topics, authors):
+        response = self.send_request(UploadAbstractRequest(paperName, keywords, topics, authors))
+        return response
+
+    def sendPaperListRequest(self):
+        response = self.send_request(PaperListRequest())
+        response.set_papers([Paper(1, 'paper1', 'metadata', [str(Keyword(1, 'key1')), str(Keyword(2, 'key2'))],
+                                   [str(Topic(1, 'topic1'))], 'document.smthg')])
+
+        return response
+
+    def sendPaperListSubmitBidRequest(self, grade, paperId):
+        response = self.send_request(PaperListSubmitBidRequest(grade, paperId))
+        return response
+
+    def sendReviewerPapersRequest(self):
+        response = self.send_request(ReviewerPapersRequest())
+        response.set_papers([Paper(1, 'paper1', 'metadata', [str(Keyword(1, 'key1')), str(Keyword(2, 'key2'))],
+                                   [str(Topic(1, 'topic1'))], 'document.smthg')])
+        return response
+
+    def sendReviewersListRequest(self):
+        response = self.send_request(ReviewerListRequest())
+        response.set_reviewers([PCMember(1, 'website', False, Author(1, None, False, [Paper(1, 'paper1', 'metadata',
+                                                        [str(Keyword(1, 'key1')), str(Keyword(2, 'key2'))],
+                                                        [str(Topic(1, 'topic1'))], 'document.smthg')], User(1, 'email',
+                                                            'password', 'name', 'username')))])
+        return response
+
+    def sendReviewRequest(self, reviewerId, paperId):
+        response = self.send_request(ReviewRequest(reviewerId, paperId))
+        response.set_review(3, 'very good')
+        return response
 
     # methods should:
     # have as params data from the UI

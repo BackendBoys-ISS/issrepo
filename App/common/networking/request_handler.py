@@ -3,7 +3,7 @@ import logging
 import pickle
 import threading
 import time
-from App.common.networking.requests import Request
+from common.networking.requests import Request
 
 
 class RequestHandler(http.server.BaseHTTPRequestHandler):

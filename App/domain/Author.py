@@ -1,5 +1,5 @@
-from common.Domain.User import User
-from common.Domain.Paper import Paper
+from domain.User import User
+from domain.Paper import Paper
 from typing import List
 
 

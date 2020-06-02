@@ -1,4 +1,4 @@
-from common.Domain.Author import Author
+from domain.Author import Author
 
 
 class PCMember(Author):
