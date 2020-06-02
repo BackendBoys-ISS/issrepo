@@ -5,7 +5,7 @@ from common.networking.requests import LoginRequest
 
 class Service:
     def __init__(self):
-        self.rqSender = Client()
+        self.rqSender = Client(use_dummy=False)
         pass
 
     def loginCheck(self, email: str, password: str):

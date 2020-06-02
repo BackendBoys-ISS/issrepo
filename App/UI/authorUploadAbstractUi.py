@@ -11,6 +11,7 @@ class uploadAbstractUi(object):
         keywords = self.keywordsLine.text().split(',')
         topics = self.topicsLine.text().split(',')
         authors = self.authorsLine.text().split(',')
+        print(keywords, topics, authors)
         Service().uploadAbstractCheck(paperName, keywords, topics, authors)
 
 

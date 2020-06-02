@@ -8,11 +8,13 @@ from common.networking.request_handler import RequestHandler
 import traceback
 
 import common.networking.requests as req
+from server.Service.AuthorService import AuthorService
+from server.Service.UserService import UserService
 
 
 class Server:
     REAL_PORT = DUMMY_PORT = 2307
-    REAL_IP = None
+    REAL_IP = "127.0.0.1"
     DUMMY_IP = '127.0.0.1'
     REQUEST_PROCESSORS_NUMBER = 4
     def __init__(self, use_dummy=False):
@@ -20,7 +22,8 @@ class Server:
         try:
             self.__init_http_server(use_dummy)
             self.__init_request_processors()
-            #self.__init_database(use_dummy)
+            self.__user_service = UserService()
+            self.__author_service = AuthorService()
 
         except Exception as e:
             print(e)
@@ -41,6 +44,7 @@ class Server:
         self.__http_server = threading.Thread(target=self.__http_server.serve_forever, args=())
         self.__http_server.start()
         print("HTTP SERVER STARTED")
+        print(address_tuple)
 
     def __init_request_processors(self):
         self.__request_processors = list()
@@ -61,8 +65,27 @@ class Server:
 
     def __execute(self, request_obj: req.Request):
         # switch case for use cases
+        print("switch?")
         if isinstance(request_obj, req.Echo):
             self.__echo(request_obj)
+        elif isinstance(request_obj, req.LoginRequest):
+            self.__log_in(request_obj)
+        elif isinstance(request_obj, req.CreateAccountRequest):
+            self.__create_account(request_obj)
+        elif isinstance(request_obj, req.UploadAbstractRequest):
+            self.__upload_abstract(request_obj)
+        elif isinstance(request_obj, req.PaperListRequest):
+            self.__handlePaperListReq(request_obj)
+        elif isinstance(request_obj, req.PaperListSubmitBidRequest):
+            self.__paperListSubmitBid(request_obj)
+        elif isinstance(request_obj, req.ReviewerPapersRequest):
+            self.__reviewerPapersRequest(request_obj)
+        elif isinstance(request_obj, req.ReviewerListRequest):
+            self.__reviewerListRequest(request_obj)
+        elif isinstance(request_obj, req.ReviewRequest):
+            self.__reviewRequest(request_obj)
+
+
 
     # exemplu pentru cum trebuie sa se comporte metodele server-ului
     # 1. ia datele primate de la client(din obiectul de tip request)
@@ -80,5 +103,39 @@ class Server:
         print(request_obj.text)
         request_obj.response_from_server = 'server response'
 
+    def __log_in(self, request_obj):
+        print("ok?")
+        request_obj.result = self.__user_service.login(request_obj.get_loginEmail(), request_obj.get_loginPassword())
+
+    def __create_account(self, request_obj):
+        request_obj.result = self.__user_service.create_account(request_obj.get_createEmail(), request_obj.get_cratePassword(),
+                                                                request_obj.get_createFullName(), request_obj.get_createFullName())
+
+    def __upload_abstract(self, request_obj):
+        print(request_obj.get_keywords(), request_obj.get_authors(), request_obj.get_topics())
+        request_obj.result = self.__author_service.add_paper(request_obj.get_authors(), request_obj.get_paperName(), "",
+                                                             "", request_obj.get_topics(), request_obj.get_keywords())
+
+    def __handlePaperListReq(self, request_obj):
+        papers = []
+        for authorID in self.__author_service.getAllAuthorIDs():
+            for paper in self.__author_service.get_papers(authorID):
+                papers.append(paper)
+        request_obj.set_papers(papers)
+
+    def __paperListSubmitBid(self, request_obj):
+        pass
 
 
+    def __reviewerPapersRequest(self, request_obj):
+        pass
+
+    def __reviewerListRequest(self, request_obj):
+        pass
+
+    def __reviewRequest(self, request_obj):
+        pass
+
+
+if __name__ == '__main__':
+    Server(use_dummy=False)

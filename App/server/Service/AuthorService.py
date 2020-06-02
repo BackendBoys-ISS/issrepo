@@ -5,10 +5,12 @@ from server.repository.PaperTopicEntity import PaperTopicRepository
 from server.repository.TopicEntity import TopicRepository
 from server.repository.KeywordEntity import KeywordRepository
 from server.repository.ContributionEntity import ContributionRepository
+from server.repository.UserEntity import UserRepository
 
 
 class AuthorService:
     def __init__(self):
+        self.__userRepo = UserRepository()
         self.__authorRepo = AuthorRepository()
         self.__paperRepo = PaperRepository()
         self.__paperKeywordRepo = PaperKeywordRepository()
@@ -18,10 +20,23 @@ class AuthorService:
         self.__contributionRepo = ContributionRepository()
         self.__ids = [12, 23, 34, 45]
 
-    def add_paper(self, authorID, name, metadata, document):
+    def add_paper(self, authors, name, metadataa, document, topics, keywords):
         try:
-            self.__paperRepo.add(self.__ids[1],name,metadata,document)
-            self.__contributionRepo.add(authorID,self.__ids[2])
+            self.__paperRepo.add(self.__ids[1], name, metadataa, document)
+            for author in authors:
+                user = self.__userRepo.find_by_name(author)
+                author_entity = self.__authorRepo.find_one_by_userID(user.userID)
+                self.__contributionRepo.add(author_entity.authorID, self.__ids[1])
+
+            for topic in topics:
+                self.__topicRepo.add(self.__ids[3], topic)
+                self.__paperTopicRepo.add(self.__ids[1], self.__ids[3])
+                self.__ids[3] += 1
+
+            for keyword in keywords:
+                self.__keywordRepo.add(self.__ids[4], keyword)
+                self.__paperKeywordRepo.add(self.__ids[1], self.__ids[4])
+                self.__ids[4] += 1
             self.__ids[1] += 1
             return True
         except:
@@ -30,7 +45,7 @@ class AuthorService:
     def add_document(self, authorID, paperID, document):
         try:
             paper = self.__paperRepo.find_one(paperID)
-            self.__paperRepo.update(paperID,paper.name,paper.metadata,document)
+            self.__paperRepo.update(paperID,paper.name,paper.metadataa,document)
         except:
             pass
 
@@ -60,4 +75,13 @@ class AuthorService:
         author = self.__authorRepo.find_one(authorID)
         return author.isSpeaker
 
+    def getAllAuthorIDs(self):
+        return[author.userID for author in self.__authorRepo.find_all()]
+
+    def get_papers(self, authorID):
+        paperIDs = self.__contributionRepo.find_by_author(authorID)
+        papers = []
+        for id in paperIDs:
+            papers.append(self.__paperRepo.find_one(id))
+        return papers
 

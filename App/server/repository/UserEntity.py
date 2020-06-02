@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.types import BigInteger
 
-db_string = "postgres://postgres:password@localhost:5432/ConfSys"
+db_string = "postgres://postgres:admin@localhost:5432/ConfSys"
 
 db = create_engine(db_string)
 base = declarative_base()
@@ -45,6 +45,12 @@ class UserRepository:
 
     def find_one(self, userID):
         return self.__session.query(User).filter(User.userID==userID).one()
+
+    def find_by_email_pass(self, email, password):
+        return self.__session.query(User).filter(User.email == email).filter(User.password == password).one()
+
+    def find_by_name(self, name):
+        return self.__session.query(User).filter(User.name == name).one()
 
     def update(self, userID, email, password, name, username):
         user = self.find_one(userID)

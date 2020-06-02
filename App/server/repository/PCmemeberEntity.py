@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.types import BigInteger, Boolean, String
 
-db_string = "postgres://postgres:password@localhost:5432/ConfSys"
+db_string = "postgres://postgres:admin@localhost:5432/ConfSys"
 
 db = create_engine(db_string)
 base = declarative_base()

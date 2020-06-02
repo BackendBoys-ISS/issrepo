@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.types import BigInteger, Boolean, String
 
-db_string = "postgres://postgres:password@localhost:5432/ConfSys"
+db_string = "postgres://postgres:admin@localhost:5432/ConfSys"
 
 db = create_engine(db_string)
 base = declarative_base()
@@ -46,6 +46,9 @@ class AuthorRepository:
 
     def find_one_by_userID(self, userID):
         return self.__session.query(Author).filter(Author.userID == userID).one()
+
+    def find_all(self):
+        return self.__session.query(Author)
 
     def update(self,authorID, userID, affiliation, isSpeaker):
         author = self.find_one(authorID)

@@ -14,9 +14,9 @@ class UserService:
         except:
             return False
 
-    def login(self, email, password, name, username):
-        user = self.__userRpo.find_one_params(email, password, name, username)
+    def login(self, email, password):
+        user = self.__userRpo.find_by_email_pass(email, password)
         if user is None:
-            return False
-        return True
+            return None
+        return user.userID
 

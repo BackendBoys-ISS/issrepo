@@ -4,7 +4,7 @@ from domain.Review import Review
 
 
 class Request(abc.ABC):
-    TIMEOUT = None
+    TIMEOUT = 10
 
     def __init__(self):
         self.is_processed_event = None

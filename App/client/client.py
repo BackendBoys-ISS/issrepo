@@ -11,7 +11,7 @@ from domain.User import User
 class Client:
     DUMMY_SERVER_IP = '127.0.0.1'
     DUMMY_SERVER_PORT = REAL_SERVER_PORT = 2307
-    REAL_SERVER_IP = None # hardcoded or read from .cfg file
+    REAL_SERVER_IP = "192.168.56.1" # hardcoded or read from .cfg file
 
     def __init__(self, use_dummy=False):
         self.__init_request_sender(use_dummy)
@@ -29,7 +29,7 @@ class Client:
 
     def echo(self, text):
         response = self.send_request(Echo(text))
-        print("Server response to our echo is {}".format(response.response_from_server))
+        #print("Server response to our echo is {}".format(response.response_from_server))
 
     def sendLoginRequest(self, email, password):
         response = self.send_request(LoginRequest(email, password))

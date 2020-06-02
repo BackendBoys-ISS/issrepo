@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.types import BigInteger
 
-db_string = "postgres://postgres:password@localhost:5432/ConfSys"
+db_string = "postgres://postgres:admin@localhost:5432/ConfSys"
 
 db = create_engine(db_string)
 base = declarative_base()
@@ -41,6 +41,13 @@ class ContributionRepository:
 
     def find_one(self, authorID, paperID):
         return self.__session.query(Contribution).filter(Contribution.authorID == authorID).filter(Contribution.paperID == paperID).one()
+
+    def find_by_author(self, authorID):
+        paperIDs = []
+        contribuitons = self.__session.query(Contribution).filter(Contribution.authorID == authorID)
+        for contrib in contribuitons:
+            paperIDs.append(contrib.paperID)
+        return paperIDs
 
     def update(self, authorID, paperID):
         pass

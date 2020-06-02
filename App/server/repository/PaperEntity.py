@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.types import BigInteger
 
-db_string = "postgres://postgres:password@localhost:5432/ConfSys"
+db_string = "postgres://postgres:admin@localhost:5432/ConfSys"
 
 db = create_engine(db_string)
 base = declarative_base()
@@ -15,11 +15,11 @@ class Paper(base):
 
     paperID = Column(BigInteger, primary_key=True)
     name = Column(String)
-    metadata = Column(String)
+    metadataa = Column(String)
     document = Column(String)
 
     def __str__(self):
-        return str(self.paperID) + " " + self.name + " " + self.metadata + " " + self.document
+        return str(self.paperID) + " " + self.name + " " + self.metadataa + " " + self.document
 
 
 class PaperRepository:
@@ -29,8 +29,8 @@ class PaperRepository:
 
         base.metadata.create_all(db)
 
-    def add(self, paperID, name, metadata, document):
-        paper = Paper(paperID=paperID, name=name, metadata=metadata, document=document)
+    def add(self, paperID, name, metadataa, document):
+        paper = Paper(paperID=paperID, name=name, metadataa=metadataa, document=document)
         self.__session.add(paper)
         self.__session.commit()
 
@@ -44,10 +44,10 @@ class PaperRepository:
     def find_one(self, paperID):
         return self.__session.query(Paper).filter(Paper.paperID == paperID).one()
 
-    def update(self, paperID, name, metadata, document):
+    def update(self, paperID, name, metadataa, document):
         paper = self.find_one(paperID)
         paper.name = name
-        paper.metadata = metadata
+        paper.metadataa = metadataa
         paper.document = document
         self.__session.commit()
 

@@ -32,7 +32,7 @@ class Ui_StackedWidget(object):
     def checkLogin(self):
         msg = QtWidgets.QMessageBox()
 
-        if Service().loginCheck(self.emailLineEdit.text(), self.passwordLineEdit.text()) == 'ok':
+        if Service().loginCheck(self.emailLineEdit.text(), self.passwordLineEdit.text()) != 'not set':
             #msg.setText('success')
             #msg.exec_()
             username = UserType(False, False, False, 'user1')
